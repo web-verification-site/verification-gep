@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Verification - GEP English Exams</title>
+    <style>
+        /* --- ESTILOS GENERALES Y PALETA DE COLORES --- */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #faf6ee; /* Fondo crema suave oficial */
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- MENÚ DE NAVEGACIÓN SUPERIOR --- */
+        .navbar {
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .nav-logo img {
+            height: 48px; 
+            vertical-align: middle;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 20px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .nav-links a:hover, .nav-links .active a {
+            color: #0b4b8f;
+        }
+        .arrow-down::after {
+            content: ' ▾';
+            font-size: 10px;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .cart-icon {
+            color: #333;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+        .search-bar input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 13px;
+            width: 140px;
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        .main-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+            min-height: 60vh;
+        }
+
+        .hero-banner-container {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        .hero-single-banner {
+            max-width: 780px; 
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        h1 {
+            color: #0c2340;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle-text {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+        }
+
+        /* --- SECCIÓN DE BÚSQUEDA --- */
+        .search-box-container {
+            margin-bottom: 10px;
+        }
+        .search-box-container input {
+            padding: 12px 15px;
+            width: 320px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+            text-transform: uppercase;
+        }
+        .search-box-container button {
+            padding: 12px 25px;
+            background-color: #ff5722; /* Fondo naranja */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .search-box-container button:hover {
+            background-color: #e64a19; 
+        }
+        
+        .search-hint {
+            color: #666;
+            font-size: 13px;
+            margin-top: 8px;
+            margin-bottom: 40px;
+            text-align: center;
+            padding-right: 120px; 
+        }
+        @media (max-width: 600px) {
+            .search-hint { padding-right: 0; }
+        }
+
+        /* Bloque informativo inferior (Justo arriba del footer azul) */
+        .bottom-info-notice {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        .bottom-info-notice a {
+            color: #0b4b8f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .bottom-info-notice a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- TABLA DE RESULTADOS DE EXAMEN --- */
+        .result-container {
+            display: none;
+            max-width: 950px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            text-align: left;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            overflow: hidden;
+        }
+        .result-status-bar {
+            background-color: #d1e7dd;
+            color: #0f5132;
+            padding: 15px 20px;
+            font-size: 15px;
+            border-bottom: 1px solid #badbcc;
+        }
+        .result-status-bar strong {
+            color: #000;
+        }
+        .result-body {
+            padding: 25px;
+        }
+        .student-picture-section {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 25px;
+            font-size: 15px;
+            color: #495057;
+            font-weight: bold;
+        }
+        .student-img {
+            width: 120px;
+            height: 140px;
+            object-fit: cover;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+        .info-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 15px;
+        }
+        .info-table td:first-child {
+            width: 30%;
+            color: #495057;
+            font-weight: bold;
+        }
+        .info-table td:last-child {
+            width: 70%;
+            color: #212529;
+        }
+        .skills-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .skills-table th, .skills-table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+        .skills-table th {
+            background-color: #0c2340;
+            color: white;
+            font-weight: 600;
+        }
+        .skills-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* --- PIE DE PÁGINA AZUL CORPORATIVO --- */
+        .main-footer {
+            background-color: #0046c0;
+            color: #ffffff;
+            padding: 50px 40px 20px 40px;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 40px;
+        }
+        @media (max-width: 768px) {
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 480px) {
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+        .footer-col h4 {
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .footer-col p {
+            margin: 8px 0;
+            color: #e2e8f0;
+        }
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+        .footer-col ul a {
+            color: #e2e8f0;
+            text-decoration: none;
+        }
+        .footer-col ul a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        .footer-col ul .bold-link {
+            font-weight: bold;
+            color: #ffffff;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        .icon-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .icon-box:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 5px;
+            margin-top: 15px;
+        }
+        .pay-badge {
+            background: white;
+            color: #0046c0;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 3px 6px;
+            border-radius: 2px;
+            text-transform: uppercase;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            color: #cbd5e1;
+        }
+        .footer-bottom .legal-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+        .footer-bottom .legal-links a:hover {
+            color: #ffffff;
+        }
+
+        .lang-selector {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            color: #333;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<!-- MENÚ DE NAVEGACIÓN SUPERIOR -->
+<nav class="navbar">
+    <div class="nav-logo">
+        <img src="logo.webp" alt="GEP Logo">
+    </div>
+    
+    <ul class="nav-links">
+        <li><a href="#" class="arrow-down">About Us</a></li>
+        <li><a href="#">Accreditation</a></li>
+        <li class="active"><a href="#" class="arrow-down">GEP Exams</a></li>
+        <li><a href="#" class="arrow-down">Testing Center</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact Us</a></li>
+    </ul>
+
+    <div class="nav-right">
+        <a href="#" class="cart-icon">🛒</a>
+        <div class="search-bar">
+            <input type="text" placeholder="Search ...">
+            <span>🔍</span>
+        </div>
+    </div>
+</nav>
+
+<!-- CUERPO PRINCIPAL DE LA PÁGINA -->
+<div class="main-content">
+    
+    <div class="hero-banner-container">
+        <img class="hero-single-banner" src="MUJER AZUL.webp" alt="Global Language Training Banner">
+    </div>
+
+    <h1>Global Language Training certificates</h1>
+    
+    <div class="subtitle-text">
+        Global Language Training certificates have a unique number imprinted in the lower left-hand corner. You can verify the authenticity of our certificates by entering the number in the box below.
+    </div>
+
+    <!-- Bloque de Verificación -->
+    <div class="search-box-container">
+        <input type="text" id="verificationCode" placeholder="Example: GEP123456789000">
+        <button onclick="checkCertificate()">SUBMIT</button>
+    </div>
+    
+    <div class="search-hint">Must be 8-20 characters long.</div>
+
+    <!-- SECCIÓN DE RESULTADOS -->
+    <div class="result-container" id="resultsBlock">
+        <div class="result-status-bar">
+            The details for Certificate No. <strong id="barCode"></strong> are:
+        </div>
+        
+        <div class="result-body">
+            <div class="student-picture-section">
+                <div>Student Picture:</div>
+                <img class="student-img" id="studentPhoto" src="" alt="Student Profile">
+            </div>
+
+            <table class="info-table">
+                <tr>
+                    <td>Certificate No:</td>
+                    <td id="resCode"></td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td id="resName"></td>
+                </tr>
+                <tr>
+                    <td>Organization:</td>
+                    <td id="resOrg"></td>
+                </tr>
+                <tr>
+                    <td>Exam:</td>
+                    <td id="resExam"></td>
+                </tr>
+                <tr>
+                    <td>CEFR Result:</td>
+                    <td id="resCefr" style="font-weight: bold; color: #0b4b8f;"></td>
+                </tr>
+                <tr>
+                    <td>Date Awarded:</td>
+                    <td id="resDate"></td>
+                </tr>
+            </table>
+
+            <h3>Skills Assessment Breakdown</h3>
+            <table class="skills-table">
+                <thead>
+                    <tr>
+                        <th>Skill Component</th>
+                        <th>Obtained Results & Scale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Language use</td>
+                        <td id="tdLanguage"></td>
+                    </tr>
+                    <tr>
+                        <td>Listening</td>
+                        <td id="tdListening"></td>
+                    </tr>
+                    <tr>
+                        <td>Reading</td>
+                        <td id="tdReading"></td>
+                    </tr>
+                    <tr>
+                        <td>Speaking</td>
+                        <td id="tdSpeaking"></td>
+                    </tr>
+                    <tr>
+                        <td>Writing</td>
+                        <td id="tdWriting"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TEXTO INFORMATIVO CON EL MAILTO: JUSTO ARRIBA DEL BANNER AZUL -->
+    <div class="bottom-info-notice">
+        The name of the person and the type of certificate will appear in the results page. If you wish to contact us for more information please email <a href="mailto:gep.info@itestenglish.com">gep.info@itestenglish.com</a>
+    </div>
+
+</div>
+
+<!-- Selector Flotante de Idioma -->
+<div class="lang-selector">
+    🌐 EN <span>▴</span>
+</div>
+
+<!-- PIE DE PÁGINA AZUL CORPORATIVO (EL BANNER AZUL) -->
+<footer class="main-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>London</h4>
+            <p>📍 20 - 22 Wenlock Road London N1 7GU, England</p>
+            <p>📞 + 44 0203 435 6821</p>
+            <p style="font-size: 12px; color: #cbd5e1; margin-top:15px;">Registered in England: No. 7854956<br>VAT Registration Number: 131574039</p>
+            <div class="social-icons">
+                <a href="#" class="icon-box">f</a>
+                <a href="#" class="icon-box">i</a>
+                <a href="#" class="icon-box">t</a>
+                <a href="#" class="icon-box">in</a>
+            </div>
+        </div>
+
+        <div class="footer-col">
+            <h4>New York</h4>
+            <p>📍 Midtown Manhattan NYC Suites 60 E 42nd St, New York,</p>
+            <p>📞 + 1 646 688 2927</p>
+            <h4 style="margin-top: 25px; margin-bottom: 5px; font-size: 12px;">We Accept</h4>
+            <div class="payment-methods">
+                <span class="pay-badge">PayPal</span>
+                <span class="pay-badge">Card</span>
+                <span class="pay-badge">Visa</span>
+                <span class="pay-badge">Amex</span>
+            </div>
+        </div>
+
+        <div class="footer-col">
+            <h4>About GEP English</h4>
+            <ul>
+                <li><a href="#">GEP English Exams</a></li>
+                <li><a href="#">GEP English Exams Description</a></li>
+                <li><a href="#">FAQs - GEP</a></li>
+                <li><a href="#">List of Testing Center</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>GEP Exams</h4>
+            <ul>
+                <li><a href="#">Level Exams (A1 - C2)</a></li>
+                <li><a href="#">Other Exams</a></li>
+                <li><a href="#">Young Learners</a></li>
+                <li><a href="#">Exams Downloads</a></li>
+                <li><a href="#" class="bold-link">Certificate Verification</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div>
+            <p style="margin:0;">© Copyright 2025 - 2027 | Global Language Training Ltd. All Rights Reserved.</p>
+            <p style="margin:5px 0 0 0; font-size:11px; color:#cbd5e1;">Designed by tropa.agency</p>
+        </div>
+        <div class="legal-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+        </div>
+    </div>
+</footer>
+
+<!-- CONTROLADORES JAVASCRIPT -->
+<script>
+    // Se actualizó el identificador de la base de datos al nuevo código solicitado
+    const database = {
+        "GEP202606426964": {
+            code: "GEP202606426964",
+            name: "ANDREA CAROLINA HERNÁNDEZ BOTTO",
+            org: "REAL ENGLISH COLOMBIA",
+            exam: "Level Exam - 5 Skills",
+            cefr: "B2",
+            date: "22 May 2026", // Vinculado a la presentación final estipulada
+            photo: "ANDREA CERTIFICADO.jpg", 
+            skills: {
+                language: "65% (D - Level B1)",
+                listening: "76% (C - Satisfactory)",
+                reading: "88% (B - Fully Satisfactory)",
+                speaking: "70% (C - Satisfactory)",
+                writing: "68% (D - Level B1)"
+            }
+        }
+    };
+
+    window.onload = function() {
+        const params = new URLSearchParams(window.location.search);
+        const codeParam = params.get('cer_code');
+        if (codeParam) {
+            document.getElementById('verificationCode').value = codeParam;
+            verify(codeParam.toUpperCase().trim());
+        }
+    };
+
+    function checkCertificate() {
+        const inputCode = document.getElementById('verificationCode').value.toUpperCase().trim();
+        verify(inputCode);
+    }
+
+    function verify(code) {
+        const record = database[code];
+        const block = document.getElementById('resultsBlock');
+
+        if (record) {
+            document.getElementById('barCode').innerText = record.code;
+            document.getElementById('resCode').innerText = record.code;
+            document.getElementById('resName').innerText = record.name;
+            document.getElementById('resOrg').innerText = record.org;
+            document.getElementById('resExam').innerText = record.exam;
+            document.getElementById('resCefr').innerText = record.cefr;
+            document.getElementById('resDate').innerText = record.date;
+            document.getElementById('studentPhoto').src = record.photo; 
+            
+            document.getElementById('tdLanguage').innerText = record.skills.language;
+            document.getElementById('tdListening').innerText = record.skills.listening;
+            document.getElementById('tdReading').innerText = record.skills.reading;
+            document.getElementById('tdSpeaking').innerText = record.skills.speaking;
+            document.getElementById('tdWriting').innerText = record.skills.writing;
+
+            block.style.display = 'block';
+            block.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            block.style.display = 'none';
+            alert("Certificate number not found.");
+        }
+    }
+</script>
+
+</body>
+</html>
